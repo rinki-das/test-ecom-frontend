@@ -12,7 +12,6 @@ const ShoppingCart: React.FC = () => {
     <AnimatePresence>
       {state.isOpen && (
         <>
-          {/* Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -21,7 +20,6 @@ const ShoppingCart: React.FC = () => {
             className="fixed inset-0 bg-black/50 z-40"
           />
 
-          {/* Drawer */}
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
@@ -47,7 +45,6 @@ const ShoppingCart: React.FC = () => {
               </Button>
             </div>
 
-            {/* Content */}
             <div className="flex-1 overflow-y-auto p-6">
               {state.items.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center">
@@ -90,7 +87,6 @@ const ShoppingCart: React.FC = () => {
                         </p>
                       </div>
 
-                      {/* Quantity controls */}
                       <div className="flex items-center space-x-2">
                         <Button
                           variant="outline"
@@ -132,7 +128,6 @@ const ShoppingCart: React.FC = () => {
               )}
             </div>
 
-            {/* Footer */}
             {state.items.length > 0 && (
               <div className="border-t border-border p-6 space-y-4">
                 <div className="flex items-center justify-between text-lg font-semibold">
@@ -161,6 +156,5 @@ const ShoppingCart: React.FC = () => {
   );
 };
 
-// ✅ Export both default and named
 export default ShoppingCart;
 export { ShoppingCart };
