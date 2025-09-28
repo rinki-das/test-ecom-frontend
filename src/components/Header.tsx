@@ -4,9 +4,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, ShoppingCart, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "react-bootstrap";
 import { useCart } from "@/contexts/CartContext";
 import { useSelector } from "@/redux/store";
+import { ProductType } from "@/types/ProductTypes";
 
 const Header: React.FC = () => {
   const products = useSelector((state) => state.products.products);
@@ -15,7 +15,7 @@ const Header: React.FC = () => {
 
   const [query, setQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
-  const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
