@@ -20,7 +20,7 @@ const Products: React.FC = () => {
   const products = useSelector((state) => state.products.products);
   const categories = useSelector((state) => state.categories.categories);
 
-  const { categorySlug } = useParams<{ categorySlug?: string }>(); // ✅ read from URL
+  const { categorySlug } = useParams<{ categorySlug?: string }>(); // read from URL
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortBy, setSortBy] = useState("name");
@@ -32,10 +32,8 @@ const Products: React.FC = () => {
     dispatch(getAllCategories());
   }, []);
 
-  // ✅ highlighted product id from URL
   const highlightedId = searchParams.get("highlight");
 
-  // ✅ Auto-select category if URL has one
   useEffect(() => {
     if (categorySlug) {
       setSelectedCategory(categorySlug);
@@ -68,7 +66,6 @@ const Products: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
       <section className="bg-gradient-hero py-20">
         <div className="container mx-auto px-6 text-center">
           <motion.h1
@@ -91,13 +88,11 @@ const Products: React.FC = () => {
       </section>
 
       <div className="container mx-auto px-6 py-12">
-        {/* Filters & Controls */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="flex flex-col md:flex-row gap-4 mb-8 p-6 bg-surface-elevated rounded-xl border border-border"
         >
-          {/* Search */}
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
@@ -122,7 +117,6 @@ const Products: React.FC = () => {
             </SelectContent>
           </Select>
 
-          {/* Sort */}
           <Select value={sortBy} onValueChange={setSortBy}>
             <SelectTrigger className="w-full md:w-48">
               <SelectValue />
@@ -135,7 +129,6 @@ const Products: React.FC = () => {
             </SelectContent>
           </Select>
 
-          {/* View Mode */}
           <div className="flex border border-border rounded-lg">
             <Button
               variant={viewMode === "grid" ? "default" : "ghost"}
@@ -156,7 +149,6 @@ const Products: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Results Count */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -168,7 +160,6 @@ const Products: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Products Grid */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -193,7 +184,6 @@ const Products: React.FC = () => {
           ))}
         </motion.div>
 
-        {/* No Results */}
         {filteredProducts.length === 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}

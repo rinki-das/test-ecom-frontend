@@ -12,7 +12,6 @@ const Trending: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
       <section className="bg-gradient-hero py-20">
         <div className="container mx-auto px-6 text-center">
           <motion.h1
@@ -35,7 +34,6 @@ const Trending: React.FC = () => {
       </section>
 
       <div className="container mx-auto px-6 py-12">
-        {/* Products Grid */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -47,7 +45,6 @@ const Trending: React.FC = () => {
           ))}
         </motion.div>
 
-        {/* No Results */}
         {trendingProducts.length === 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}

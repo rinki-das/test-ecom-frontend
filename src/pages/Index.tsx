@@ -37,7 +37,6 @@ const Index = () => {
   const featuredProducts = products.slice(0, 4);
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -81,7 +80,6 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Floating Elements */}
         <motion.div
           animate={{ y: [0, -20, 0] }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
@@ -99,7 +97,6 @@ const Index = () => {
         />
       </section>
 
-      {/* Features Section */}
       <section className="py-20 bg-surface-elevated">
         <div className="container mx-auto px-6">
           <motion.div
@@ -146,7 +143,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Categories Section */}
       <section className="py-20">
         <div className="container mx-auto px-6">
           <motion.div
@@ -171,7 +167,7 @@ const Index = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
                 whileHover={{ y: -10 }}
-                onClick={() => navigate(`/products/${category.slug}`)} // ✅ go to products/:slug
+                onClick={() => navigate(`/products/${category.slug}`)} // go to products/:slug
                 className="group relative overflow-hidden rounded-2xl cursor-pointer"
               >
                 <div className="aspect-[4/3] overflow-hidden">
@@ -191,7 +187,7 @@ const Index = () => {
                     variant="outline"
                     onClick={(e) => {
                       e.stopPropagation();
-                      navigate(`/products/${category.slug}`); // ✅ button also navigates
+                      navigate(`/products/${category.slug}`);
                     }}
                     className="glass-effect border-white/30 text-black hover:bg-white/10"
                   >
@@ -248,7 +244,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

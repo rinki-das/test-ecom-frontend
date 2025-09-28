@@ -6,12 +6,11 @@ import { useSelector } from "@/redux/store";
 const Premium: React.FC = () => {
   const products = useSelector((state) => state.products.products);
 
-  // Filter for premium products (price > 200)
+  // filter for premium products (price > 200)
   const premiumProducts = products.filter((product) => product.price > 200);
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
       <section className="bg-gradient-hero py-20">
         <div className="container mx-auto px-6 text-center">
           <motion.h1
@@ -34,7 +33,6 @@ const Premium: React.FC = () => {
       </section>
 
       <div className="container mx-auto px-6 py-12">
-        {/* Products Grid */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -46,7 +44,6 @@ const Premium: React.FC = () => {
           ))}
         </motion.div>
 
-        {/* No Results */}
         {premiumProducts.length === 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}

@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Star,
-  Heart,
   ShoppingCart,
   Truck,
   Shield,
@@ -12,14 +11,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/contexts/CartContext";
-import { useToast } from "@/hooks/use-toast";
 import { useSelector } from "@/redux/store";
+import { toast } from "react-hot-toast";
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams();
   const { addItem } = useCart();
-  const { toast } = useToast();
-
   const products = useSelector((state) => state.products.products);
 
   const product = products.find((p) => String(p._id) === String(id));
@@ -43,10 +40,7 @@ const ProductDetail: React.FC = () => {
 
   const handleAddToCart = () => {
     addItem(product);
-    toast({
-      title: "Added to cart",
-      description: `${product.name} has been added to your cart.`,
-    });
+    toast.success(`${product.name} has been added to your cart.`);
   };
 
   const discountPercentage = product.originalPrice
@@ -74,14 +68,14 @@ const ProductDetail: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Product Info */}
+          {/* Product Details */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
             className="space-y-6"
           >
-            {/* Header */}
+            {/* Category & Brand */}
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <Badge variant="secondary">{product.category}</Badge>
@@ -114,7 +108,7 @@ const ProductDetail: React.FC = () => {
               </div>
             </div>
 
-            {/* Price */}
+            {/* Pricing */}
             <div className="flex items-center space-x-4">
               <span className="text-4xl font-bold text-primary">
                 ₹{product.price}
@@ -158,7 +152,7 @@ const ProductDetail: React.FC = () => {
               </ul>
             </div>
 
-            {/* Actions */}
+            {/* Add to Cart */}
             <div className="space-y-4">
               <div className="flex space-x-4">
                 <Button
@@ -168,9 +162,6 @@ const ProductDetail: React.FC = () => {
                 >
                   <ShoppingCart className="w-5 h-5 mr-2" />
                   {product.inStock ? "Add to Cart" : "Out of Stock"}
-                </Button>
-                <Button variant="outline" size="icon">
-                  <Heart className="w-5 h-5" />
                 </Button>
               </div>
 
@@ -185,7 +176,7 @@ const ProductDetail: React.FC = () => {
               )}
             </div>
 
-            {/* Benefits */}
+            {/* Shipping / Warranty / Returns */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6 border-t border-border">
               <div className="flex items-center space-x-2 text-sm">
                 <Truck className="w-5 h-5 text-primary" />

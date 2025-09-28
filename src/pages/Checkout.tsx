@@ -13,7 +13,6 @@ const Checkout = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-6 py-12">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -24,7 +23,6 @@ const Checkout = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Order Items */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -64,7 +62,6 @@ const Checkout = () => {
             </Card>
           </motion.div>
 
-          {/* Delivery + Price */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -76,7 +73,6 @@ const Checkout = () => {
                 <CardTitle>Delivery & Price Details</CardTitle>
               </CardHeader>
               <CardContent>
-                {/* Delivery Info */}
                 <div className="mb-6 space-y-2">
                   <p className="font-medium">
                     {placeOrders.deliveryDetails.firstName +
@@ -99,7 +95,6 @@ const Checkout = () => {
                   </div>
                 </div>
 
-                {/* Price Info */}
                 <div className="space-y-2 border-t pt-4 text-gray-700">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
@@ -121,7 +116,6 @@ const Checkout = () => {
               </CardContent>
             </Card>
 
-            {/* Security & Back Button */}
             <Card>
               <CardContent className="pt-6">
                 <div className="space-y-3">

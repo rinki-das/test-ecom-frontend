@@ -59,7 +59,6 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Company Links */}
           <div>
             <p className="text-sm font-semibold tracking-widest text-gray-400 uppercase">
               Company
@@ -78,7 +77,6 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Help Links */}
           <div>
             <p className="text-sm font-semibold tracking-widest text-gray-400 uppercase">
               Help
@@ -102,7 +100,6 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Quick Links (new) */}
           <div>
             <p className="text-sm font-semibold tracking-widest text-gray-400 uppercase">
               Quick Links
@@ -122,7 +119,6 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* Bottom Bar */}
         <hr className="mt-12 mb-6 border-gray-200" />
         <p className="text-sm text-center text-gray-600">
           © {new Date().getFullYear()}, All Rights Reserved by EliteStore

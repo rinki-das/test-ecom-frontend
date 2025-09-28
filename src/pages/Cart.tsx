@@ -45,7 +45,6 @@ const Cart: React.FC = () => {
 
     setLoading(true);
     try {
-      // simulate API call
       await new Promise((res) => setTimeout(res, 1000));
 
       const newOrder = {
@@ -72,7 +71,7 @@ const Cart: React.FC = () => {
     return <Checkout />;
   }
 
-  // ✅ Empty Cart
+  // for empty Cart
   if (state.items.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -95,11 +94,9 @@ const Cart: React.FC = () => {
     );
   }
 
-  // ✅ Default Cart
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-6 py-12">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -115,7 +112,6 @@ const Cart: React.FC = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Items */}
           <div className="lg:col-span-2 space-y-4">
             {state.items.map((item) => (
               <motion.div
@@ -221,7 +217,6 @@ const Cart: React.FC = () => {
               </div>
             </div>
 
-            {/* Form */}
             <div className="space-y-3">
               <Input
                 placeholder="First Name*"
