@@ -5,9 +5,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="py-10 bg-gray-50 sm:pt-16 lg:pt-20 border-t border-gray-200">
       <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-        {/* Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-12 gap-x-12">
-          {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <h2 className="text-2xl font-bold text-gray-900">EliteStore</h2>
             <p className="text-base leading-relaxed text-gray-600 mt-5">
@@ -15,7 +13,6 @@ const Footer: React.FC = () => {
               destination for lifestyle essentials.
             </p>
 
-            {/* Socials */}
             <ul className="flex items-center space-x-3 mt-6">
               {[
                 {

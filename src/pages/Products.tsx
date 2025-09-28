@@ -3,27 +3,24 @@ import { motion } from "framer-motion";
 import { Search, Grid, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import ProductCard from "@/components/ProductCard";
 import { useSearchParams, useParams } from "react-router-dom";
 import { dispatch, useSelector } from "@/redux/store";
 import { getAllProducts } from "@/redux/slices/products";
 import { getAllCategories } from "@/redux/slices/categories";
+import Select from "react-select";
 
 const Products: React.FC = () => {
   const products = useSelector((state) => state.products.products);
   const categories = useSelector((state) => state.categories.categories);
 
-  const { categorySlug } = useParams<{ categorySlug?: string }>(); // read from URL
+  const { categorySlug } = useParams<{ categorySlug?: string }>();
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [sortBy, setSortBy] = useState("name");
+  const [selectedCategory, setSelectedCategory] = useState<{ label: string; value: string } | null>({
+    label: "All Categories",
+    value: "all",
+  });
+  const [sortBy, setSortBy] = useState<{ label: string; value: string }>({ label: "Name A-Z", value: "name" });
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [searchParams] = useSearchParams();
 
@@ -36,23 +33,32 @@ const Products: React.FC = () => {
 
   useEffect(() => {
     if (categorySlug) {
-      setSelectedCategory(categorySlug);
+      const category = categories.find((c) => c.slug === categorySlug);
+      if (category) setSelectedCategory({ label: category.name, value: category.slug });
     }
-  }, [categorySlug]);
+  }, [categorySlug, categories]);
+
+  const categoryOptions = [{ label: "All Categories", value: "all" }, ...categories.map((c) => ({ label: c.name, value: c.slug }))];
+  const sortOptions = [
+    { label: "Name A-Z", value: "name" },
+    { label: "Price: Low to High", value: "price-low" },
+    { label: "Price: High to Low", value: "price-high" },
+    { label: "Highest Rated", value: "rating" },
+  ];
 
   const filteredProducts = products
     .filter((product) => {
-      const categorySlug =
+      const categorySlugFromProduct =
         categories.find((c) => c.name === product.category)?.slug || "";
 
       return (
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (selectedCategory === "all" ||
-          categorySlug.toLowerCase() === selectedCategory.toLowerCase())
+        (selectedCategory?.value === "all" ||
+          categorySlugFromProduct.toLowerCase() === selectedCategory?.value.toLowerCase())
       );
     })
     .sort((a, b) => {
-      switch (sortBy) {
+      switch (sortBy.value) {
         case "price-low":
           return a.price - b.price;
         case "price-high":
@@ -81,8 +87,7 @@ const Products: React.FC = () => {
             transition={{ delay: 0.2 }}
             className="text-xl text-white/90 mb-8 max-w-2xl mx-auto"
           >
-            Explore our curated collection of premium products designed for the
-            modern lifestyle
+            Explore our curated collection of premium products designed for the modern lifestyle
           </motion.p>
         </div>
       </section>
@@ -103,31 +108,23 @@ const Products: React.FC = () => {
             />
           </div>
 
-          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-            <SelectTrigger className="w-full md:w-48">
-              <SelectValue placeholder="All Categories" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
-              {categories.map((category) => (
-                <SelectItem key={category.id} value={category.slug}>
-                  {category.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="w-full md:w-48">
+            <Select
+              options={categoryOptions}
+              value={selectedCategory}
+              onChange={(val) => setSelectedCategory(val)}
+              placeholder="All Categories"
+            />
+          </div>
 
-          <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-full md:w-48">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="name">Name A-Z</SelectItem>
-              <SelectItem value="price-low">Price: Low to High</SelectItem>
-              <SelectItem value="price-high">Price: High to Low</SelectItem>
-              <SelectItem value="rating">Highest Rated</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="w-full md:w-48">
+            <Select
+              options={sortOptions}
+              value={sortBy}
+              onChange={(val) => setSortBy(val!)}
+              placeholder="Sort By"
+            />
+          </div>
 
           <div className="flex border border-border rounded-lg">
             <Button
@@ -149,12 +146,7 @@ const Products: React.FC = () => {
           </div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="mb-6"
-        >
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="mb-6">
           <p className="text-muted-foreground">
             Showing {filteredProducts.length} of {products.length} products
           </p>
@@ -164,20 +156,12 @@ const Products: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className={
-            viewMode === "grid"
-              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
-              : "space-y-6"
-          }
+          className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" : "space-y-6"}
         >
           {filteredProducts.map((product, index) => (
             <div
               key={product._id}
-              className={`rounded-xl transition shadow-sm ${
-                product._id === highlightedId
-                  ? "border-4 border-yellow-500 shadow-lg scale-105"
-                  : ""
-              }`}
+              className={`rounded-xl transition shadow-sm ${product._id === highlightedId ? "border-4 border-yellow-500 shadow-lg scale-105" : ""}`}
             >
               <ProductCard product={product} index={index} />
             </div>
@@ -185,11 +169,7 @@ const Products: React.FC = () => {
         </motion.div>
 
         {filteredProducts.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center py-20"
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-20">
             <h3 className="text-2xl font-semibold mb-4">No products found</h3>
             <p className="text-muted-foreground mb-6">
               Try adjusting your search criteria or browse all categories
@@ -197,7 +177,7 @@ const Products: React.FC = () => {
             <Button
               onClick={() => {
                 setSearchTerm("");
-                setSelectedCategory("all");
+                setSelectedCategory({ label: "All Categories", value: "all" });
               }}
               className="btn-hero"
             >

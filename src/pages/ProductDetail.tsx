@@ -1,15 +1,8 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import {
-  Star,
-  ShoppingCart,
-  Truck,
-  Shield,
-  RefreshCw,
-} from "lucide-react";
+import { Star, ShoppingCart, Truck, Shield, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/contexts/CartContext";
 import { useSelector } from "@/redux/store";
 import { toast } from "react-hot-toast";
@@ -53,7 +46,6 @@ const ProductDetail: React.FC = () => {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Product Image */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -68,17 +60,17 @@ const ProductDetail: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Product Details */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
             className="space-y-6"
           >
-            {/* Category & Brand */}
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <Badge variant="secondary">{product.category}</Badge>
+                <span className="bg-gray-200 text-gray-700 text-xs font-semibold px-2 py-1 rounded">
+                  {product.category}
+                </span>
                 <span className="text-sm text-muted-foreground">
                   {product.brand}
                 </span>
@@ -87,7 +79,6 @@ const ProductDetail: React.FC = () => {
                 {product.name}
               </h1>
 
-              {/* Rating */}
               <div className="flex items-center space-x-2 mb-4">
                 <div className="flex items-center">
                   {[...Array(5)].map((_, i) => (
@@ -108,7 +99,6 @@ const ProductDetail: React.FC = () => {
               </div>
             </div>
 
-            {/* Pricing */}
             <div className="flex items-center space-x-4">
               <span className="text-4xl font-bold text-primary">
                 ₹{product.price}
@@ -118,14 +108,13 @@ const ProductDetail: React.FC = () => {
                   <span className="text-2xl text-muted-foreground line-through">
                     ₹{product.originalPrice}
                   </span>
-                  <Badge variant="destructive" className="ml-2">
+                  <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded ml-2">
                     Save {discountPercentage}%
-                  </Badge>
+                  </span>
                 </>
               )}
             </div>
 
-            {/* Description */}
             <div>
               <h3 className="font-semibold mb-2">Description</h3>
               <p className="text-muted-foreground leading-relaxed">
@@ -133,7 +122,6 @@ const ProductDetail: React.FC = () => {
               </p>
             </div>
 
-            {/* Features */}
             <div>
               <h3 className="font-semibold mb-3">Key Features</h3>
               <ul className="space-y-2">
@@ -152,7 +140,6 @@ const ProductDetail: React.FC = () => {
               </ul>
             </div>
 
-            {/* Add to Cart */}
             <div className="space-y-4">
               <div className="flex space-x-4">
                 <Button
@@ -176,7 +163,6 @@ const ProductDetail: React.FC = () => {
               )}
             </div>
 
-            {/* Shipping / Warranty / Returns */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6 border-t border-border">
               <div className="flex items-center space-x-2 text-sm">
                 <Truck className="w-5 h-5 text-primary" />

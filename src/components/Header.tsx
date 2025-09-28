@@ -1,35 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import {
-  Search,
-  ShoppingCart,
-  User,
-  Menu,
-  ChevronDown,
-} from "lucide-react";
+import React, { useEffect, useState, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { Search, ShoppingCart, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "react-bootstrap";
 import { useCart } from "@/contexts/CartContext";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useSelector } from "@/redux/store";
 
 const Header: React.FC = () => {
   const products = useSelector((state) => state.products.products);
-
   const { totalItems } = useCart();
   const location = useLocation();
-  const navigate = useNavigate();
 
   const [query, setQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -40,6 +28,19 @@ const Header: React.FC = () => {
       )
     );
   }, [products, query]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <>
@@ -63,50 +64,50 @@ const Header: React.FC = () => {
                 Home
               </Link>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="font-serif font-semibold text-lg text-gray-700 hover:text-yellow-500 p-0 h-auto flex items-center transition-all duration-300"
-                  >
-                    Products
-                    <ChevronDown className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:rotate-180" />
-                  </Button>
-                </DropdownMenuTrigger>
-
-                <DropdownMenuContent
-                  align="start"
-                  className="w-56 bg-white text-gray-700 border border-gray-200 shadow-xl"
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setShowDropdown((prev) => !prev)}
+                  className="font-serif font-semibold text-lg text-gray-700 hover:text-yellow-500 transition-all duration-300"
                 >
-                  {[
-                    { path: "/products/premium", label: "Premium Products" },
-                    { path: "/products/trending", label: "Trending Products" },
-                  ].map((item) => (
-                    <DropdownMenuItem asChild key={item.path}>
+                  Products
+                </button>
+
+                <AnimatePresence>
+                  {showDropdown && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute left-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-xl z-50"
+                    >
                       <Link
-                        to={item.path}
-                        className="w-full px-3 py-2 rounded-md hover:bg-gray-100 hover:text-yellow-600 transition-colors duration-200"
+                        to="/products/premium"
+                        className="block px-6 py-2 text-gray-700 hover:bg-gray-100 hover:text-yellow-600"
+                        onClick={() => setShowDropdown(false)}
                       >
-                        {item.label}
+                        Premium Products
                       </Link>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+                      <Link
+                        to="/products/trending"
+                        className="block px-6 py-2 text-gray-700 hover:bg-gray-100 hover:text-yellow-600"
+                        onClick={() => setShowDropdown(false)}
+                      >
+                        Trending Products
+                      </Link>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
 
-              {[
-                { path: "/about", label: "About" },
-              ].map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`font-serif font-semibold text-lg transition-all duration-300 hover:text-yellow-500 ${
-                    isActive(item.path) ? "text-yellow-600" : "text-gray-700"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              <Link
+                to="/about"
+                className={`font-serif font-semibold text-lg transition-all duration-300 hover:text-yellow-500 ${
+                  isActive("/about") ? "text-yellow-600" : "text-gray-700"
+                }`}
+              >
+                About
+              </Link>
             </nav>
 
             <div className="hidden md:flex items-center max-w-md flex-1 mx-10 relative">
@@ -159,7 +160,6 @@ const Header: React.FC = () => {
             </div>
 
             <div className="flex items-center space-x-6">
-
               <motion.div
                 whileHover={{ scale: 1.15 }}
                 whileTap={{ scale: 0.9 }}
@@ -172,9 +172,9 @@ const Header: React.FC = () => {
                   >
                     <ShoppingCart className="w-6 h-6" />
                     {totalItems > 0 && (
-                      <Badge className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs bg-yellow-400 text-black font-bold">
+                      <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-yellow-400 text-black text-xs font-bold flex items-center justify-center">
                         {totalItems}
-                      </Badge>
+                      </span>
                     )}
                   </Button>
                 </Link>

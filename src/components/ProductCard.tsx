@@ -2,7 +2,6 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Star, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/contexts/CartContext";
 import { ProductType } from "@/types/ProductTypes";
 import { toast } from "react-hot-toast";
@@ -42,29 +41,37 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) => {
           className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
         />
 
+        {/* Hover Action */}
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-2">
           <motion.div
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
             transition={{ delay: 0.2 }}
           >
-            <Button onClick={(e) => { e.stopPropagation(); handleAddToCart(); }} className="btn-hero px-6">
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddToCart();
+              }}
+              className="btn-hero px-6"
+            >
               <ShoppingCart className="w-4 h-4 mr-2" />
               Add to Cart
             </Button>
           </motion.div>
         </div>
 
+        {/* ✅ Badges */}
         <div className="absolute top-3 left-3 flex flex-col space-y-2">
           {discountPercentage > 0 && (
-            <Badge variant="destructive" className="text-xs">
+            <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
               -{discountPercentage}%
-            </Badge>
+            </span>
           )}
           {!product.inStock && (
-            <Badge variant="secondary" className="text-xs">
+            <span className="bg-gray-500 text-white text-xs font-bold px-2 py-1 rounded">
               Out of Stock
-            </Badge>
+            </span>
           )}
         </div>
       </div>
@@ -72,7 +79,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) => {
       <div className="p-6">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm text-muted-foreground">{product.brand}</span>
-          <span className="text-xs text-primary bg-primary-light px-2 py-1 rounded">
+          <span className="text-xs text-primary bg-primary/10 px-2 py-1 rounded">
             {product.category}
           </span>
         </div>

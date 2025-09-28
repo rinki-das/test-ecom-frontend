@@ -9,7 +9,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "react-bootstrap"; 
 import ProductCard from "@/components/ProductCard";
 import heroBanner from "@/assets/hero-banner.jpg";
 import Footer from "../components/ui/Footer";
@@ -35,6 +35,7 @@ const Index = () => {
   }, []);
 
   const featuredProducts = products.slice(0, 4);
+
   return (
     <div className="min-h-screen bg-background">
       <section className="relative overflow-hidden">
@@ -51,7 +52,7 @@ const Index = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <Badge className="bg-white/20 text-white border-white/30 mb-6">
+              <Badge bg="light" text="dark" className="mb-6">
                 New Collection Available
               </Badge>
 
@@ -167,7 +168,7 @@ const Index = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
                 whileHover={{ y: -10 }}
-                onClick={() => navigate(`/products/${category.slug}`)} // go to products/:slug
+                onClick={() => navigate(`/products/${category.slug}`)}
                 className="group relative overflow-hidden rounded-2xl cursor-pointer"
               >
                 <div className="aspect-[4/3] overflow-hidden">
@@ -201,7 +202,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Featured Products */}
       <section className="py-20 bg-surface-elevated">
         <div className="container mx-auto px-6">
           <motion.div

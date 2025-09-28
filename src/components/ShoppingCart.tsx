@@ -1,17 +1,18 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, Plus, Minus, ShoppingBag } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useCart } from '@/contexts/CartContext';
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, Plus, Minus, ShoppingBag } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useCart } from "@/contexts/CartContext";
 
 const ShoppingCart: React.FC = () => {
-  const { state, removeItem, updateQuantity, setCartOpen, totalPrice } = useCart();
+  const { state, removeItem, updateQuantity, setCartOpen, totalPrice } =
+    useCart();
 
   return (
     <AnimatePresence>
       {state.isOpen && (
         <>
-          {/* Backdrop */}
+          {/* Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -20,12 +21,12 @@ const ShoppingCart: React.FC = () => {
             className="fixed inset-0 bg-black/50 z-40"
           />
 
-          {/* Cart Panel */}
+          {/* Drawer */}
           <motion.div
-            initial={{ x: '100%' }}
+            initial={{ x: "100%" }}
             animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'tween', duration: 0.3 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "tween", duration: 0.3 }}
             className="fixed right-0 top-0 h-full w-full max-w-md bg-background shadow-xl z-50 flex flex-col"
           >
             {/* Header */}
@@ -46,19 +47,18 @@ const ShoppingCart: React.FC = () => {
               </Button>
             </div>
 
-            {/* Cart Items */}
+            {/* Content */}
             <div className="flex-1 overflow-y-auto p-6">
               {state.items.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center">
                   <ShoppingBag className="w-16 h-16 text-muted-foreground mb-4" />
-                  <h3 className="text-lg font-medium mb-2">Your cart is empty</h3>
+                  <h3 className="text-lg font-medium mb-2">
+                    Your cart is empty
+                  </h3>
                   <p className="text-muted-foreground mb-4">
                     Add some products to get started!
                   </p>
-                  <Button
-                    onClick={() => setCartOpen(false)}
-                    className="btn-hero"
-                  >
+                  <Button onClick={() => setCartOpen(false)} className="btn-hero">
                     Continue Shopping
                   </Button>
                 </div>
@@ -66,20 +66,18 @@ const ShoppingCart: React.FC = () => {
                 <div className="space-y-4">
                   {state.items.map((item, index) => (
                     <motion.div
-                      key={item.product.id}
+                      key={item.product._id}
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
                       className="flex items-center space-x-4 p-4 border border-border rounded-lg"
                     >
-                      {/* Product Image */}
                       <img
                         src={item.product.image}
                         alt={item.product.name}
                         className="w-16 h-16 object-cover rounded-md"
                       />
 
-                      {/* Product Info */}
                       <div className="flex-1">
                         <h4 className="font-medium text-sm line-clamp-2">
                           {item.product.name}
@@ -88,18 +86,18 @@ const ShoppingCart: React.FC = () => {
                           {item.product.brand}
                         </p>
                         <p className="font-semibold text-primary">
-                          ${item.product.price}
+                          ₹{item.product.price}
                         </p>
                       </div>
 
-                      {/* Quantity Controls */}
+                      {/* Quantity controls */}
                       <div className="flex items-center space-x-2">
                         <Button
                           variant="outline"
                           size="icon"
                           className="w-8 h-8"
                           onClick={() =>
-                            updateQuantity(item.product.id, item.quantity - 1)
+                            updateQuantity(item.product._id, item.quantity - 1)
                           }
                         >
                           <Minus className="w-3 h-3" />
@@ -112,18 +110,18 @@ const ShoppingCart: React.FC = () => {
                           size="icon"
                           className="w-8 h-8"
                           onClick={() =>
-                            updateQuantity(item.product.id, item.quantity + 1)
+                            updateQuantity(item.product._id, item.quantity + 1)
                           }
                         >
                           <Plus className="w-3 h-3" />
                         </Button>
                       </div>
 
-                      {/* Remove Button */}
+                      {/* Remove */}
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => removeItem(item.product.id)}
+                        onClick={() => removeItem(item.product._id)}
                         className="text-destructive hover:text-destructive"
                       >
                         <X className="w-4 h-4" />
@@ -137,13 +135,11 @@ const ShoppingCart: React.FC = () => {
             {/* Footer */}
             {state.items.length > 0 && (
               <div className="border-t border-border p-6 space-y-4">
-                {/* Total */}
                 <div className="flex items-center justify-between text-lg font-semibold">
                   <span>Total:</span>
-                  <span className="text-primary">${totalPrice.toFixed(2)}</span>
+                  <span className="text-primary">₹{totalPrice.toFixed(2)}</span>
                 </div>
 
-                {/* Action Buttons */}
                 <div className="space-y-3">
                   <Button className="w-full btn-hero">
                     Proceed to Checkout
@@ -165,4 +161,6 @@ const ShoppingCart: React.FC = () => {
   );
 };
 
+// ✅ Export both default and named
 export default ShoppingCart;
+export { ShoppingCart };

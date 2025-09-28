@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
 import Header from "@/components/Header";
-import ShoppingCart from "@/components/ShoppingCart";
+import { ShoppingCart } from "@/components/ShoppingCart";
 import Index from "./pages/Index";
 import Products from "./pages/Products";
 import Premium from "./pages/Premium";
@@ -24,9 +24,7 @@ const App = () => (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <CartProvider>
-          {/* Standard React Hot Toast */}
           <Toaster position="top-right" reverseOrder={false} />
-
           <BrowserRouter>
             <div className="min-h-screen bg-background">
               <Header />
@@ -42,7 +40,6 @@ const App = () => (
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/products/arrivals" element={<Trending />} />
                 <Route path="/about" element={<About />} />
-                {/* Catch-all */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </div>
