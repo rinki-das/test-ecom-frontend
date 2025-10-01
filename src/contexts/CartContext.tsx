@@ -3,20 +3,16 @@ import { CartItem, ProductType } from "@/types/ProductTypes";
 
 interface CartState {
   items: CartItem[];
-  isOpen: boolean;
 }
 
 type CartAction =
   | { type: "ADD_ITEM"; product: ProductType }
   | { type: "REMOVE_ITEM"; productId: string }
   | { type: "UPDATE_QUANTITY"; productId: string; quantity: number }
-  | { type: "CLEAR_CART" }
-  | { type: "TOGGLE_CART" }
-  | { type: "SET_CART_OPEN"; isOpen: boolean };
+  | { type: "CLEAR_CART" };
 
 const initialState: CartState = {
   items: [],
-  isOpen: false,
 };
 
 const cartReducer = (state: CartState, action: CartAction): CartState => {
@@ -40,6 +36,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
         items: [...state.items, { product: action.product, quantity: 1 }],
       };
     }
+
     case "REMOVE_ITEM":
       return {
         ...state,
@@ -47,6 +44,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
           (item) => item.product._id !== action.productId
         ),
       };
+
     case "UPDATE_QUANTITY":
       if (action.quantity <= 0) {
         return {
@@ -64,21 +62,13 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
             : item
         ),
       };
+
     case "CLEAR_CART":
       return {
         ...state,
         items: [],
       };
-    case "TOGGLE_CART":
-      return {
-        ...state,
-        isOpen: !state.isOpen,
-      };
-    case "SET_CART_OPEN":
-      return {
-        ...state,
-        isOpen: action.isOpen,
-      };
+
     default:
       return state;
   }
@@ -90,8 +80,6 @@ interface CartContextType {
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
-  toggleCart: () => void;
-  setCartOpen: (isOpen: boolean) => void;
   totalItems: number;
   totalPrice: number;
 }
@@ -110,9 +98,6 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
   const updateQuantity = (productId: string, quantity: number) =>
     dispatch({ type: "UPDATE_QUANTITY", productId, quantity });
   const clearCart = () => dispatch({ type: "CLEAR_CART" });
-  const toggleCart = () => dispatch({ type: "TOGGLE_CART" });
-  const setCartOpen = (isOpen: boolean) =>
-    dispatch({ type: "SET_CART_OPEN", isOpen });
 
   const totalItems = state.items.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = state.items.reduce(
@@ -128,8 +113,6 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
         removeItem,
         updateQuantity,
         clearCart,
-        toggleCart,
-        setCartOpen,
         totalItems,
         totalPrice,
       }}

@@ -24,7 +24,7 @@ const App = () => (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <CartProvider>
-          <Toaster position="top-right" reverseOrder={false} />
+          <Toaster position="bottom-right" reverseOrder={false} />
           <BrowserRouter>
             <div className="min-h-screen bg-background">
               <Header />
